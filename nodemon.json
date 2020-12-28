@@ -1,5 +1,7 @@
 {
+    "restartable": "rs",
+    "ignore": [".git", "node_modules/", "dist/", "coverage/"],
     "watch": ["src"],
-    "ext": "ts",
+    "ext": "js,json,ts",
     "exec": "ts-node ./src/config/server/index.ts"
 }
