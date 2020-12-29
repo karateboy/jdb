@@ -14,6 +14,7 @@ const connectOptions: mongoose.ConnectOptions = {
     // reconnectTries: Number.MAX_VALUE,
     // reconnectInterval: 1000,
     useNewUrlParser: true,
+    useCreateIndex: true,
     useUnifiedTopology: true,
 }
 
