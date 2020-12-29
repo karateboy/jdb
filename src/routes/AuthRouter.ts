@@ -1,10 +1,10 @@
-import { AuthComponent } from '../components';
-import { Router } from 'express';
+import { AuthComponent } from '../components'
+import { Router } from 'express'
 
 /**
  * @constant {express.Router}
  */
-const router: Router = Router();
+const router: Router = Router()
 
 /**
  * POST method route
@@ -42,12 +42,12 @@ const router: Router = Router();
  *              logged: false
  *              message: Email already exists
  */
-router.post('/signup', AuthComponent.signup);
+router.post('/signup', AuthComponent.signup)
 
 /**
  * POST method route
  * @example http://localhost:PORT/login
- * 
+ *
  * @swagger
  * /auth/login/:
  *  post:
@@ -81,11 +81,11 @@ router.post('/signup', AuthComponent.signup);
  *              logged: false
  *              message: Invalid credentials
  */
-router.post('/login', AuthComponent.login);
+router.post('/login', AuthComponent.login)
 /**
  * POST method route
  * @example http://localhost:3000
- * 
+ *
  * @swagger
  * /auth/logout/:
  *  post:
@@ -109,10 +109,9 @@ router.post('/login', AuthComponent.login);
  *              logged: false
  *              message: You are not authorized to app. Can't logout
  */
-router.post('/logout', AuthComponent.logout);
-
+router.post('/logout', AuthComponent.logout)
 
 /**
  * @export {express.Router}
  */
-export default router;
+export default router

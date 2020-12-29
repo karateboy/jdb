@@ -1,47 +1,48 @@
-import * as Joi from 'joi';
-import AuthValidation from './validation';
-import UserModel, { IUserModel } from '../User/model';
-import { IAuthService } from './interface';
+import * as Joi from 'joi'
+import AuthValidation from './validation'
+import UserModel, { IUserModel } from '../User/model'
+import { IAuthService } from './interface'
 
 /**
  * @export
  * @implements {IAuthService}
  */
 const AuthService: IAuthService = {
-
     /**
      * @param {IUserModel} body
      * @returns {Promise <IUserModel>}
      * @memberof AuthService
      */
-    async createUser(body: IUserModel): Promise < IUserModel > {
+    async createUser(body: IUserModel): Promise<IUserModel> {
         try {
-            const validate: Joi.ValidationResult < IUserModel > = AuthValidation.createUser(body);
+            const validate: Joi.ValidationResult<IUserModel> = AuthValidation.createUser(
+                body
+            )
 
             if (validate.error) {
-                throw new Error(validate.error.message);
+                throw new Error(validate.error.message)
             }
 
             const user: IUserModel = new UserModel({
-                email: body.email,
-                password: body.password
-            });
+                username: body.username,
+                password: body.password,
+            })
 
             const query: IUserModel = await UserModel.findOne({
-                email: body.email
-            });
+                username: body.username
+            })
 
             if (query) {
-                throw new Error('This email already exists');
+                throw new Error('This user already exists')
             }
 
-            const saved: IUserModel = await user.save();
+            const saved: IUserModel = await user.save()
 
-            return saved;
+            return saved
         } catch (error) {
-            throw new Error(error);
+            throw new Error(error)
         }
     },
-};
+}
 
-export default AuthService;
+export default AuthService

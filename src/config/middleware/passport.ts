@@ -18,11 +18,11 @@ const LocalStrategy: LocalStrategyType = passportLocal.Strategy
 passport.serializeUser(
     (
         user: {
-            id: number
+            username: string
         },
         done: Function
     ) => {
-        done(undefined, user.id)
+        done(undefined, user.username)
     }
 )
 
@@ -31,10 +31,9 @@ passport.serializeUser(
  * checks if user exists in database
  * if everything ok, proceed to route
  */
-passport.deserializeUser(async (id: number, done: Function) => {
+passport.deserializeUser(async (username: string, done: Function) => {
     try {
-        const user: IUserModel = await UserModel.findById(id)
-
+        const user: IUserModel = await UserModel.findOne({ username })
         done(null, user)
     } catch (error) {
         done(error)
@@ -48,22 +47,19 @@ passport.deserializeUser(async (id: number, done: Function) => {
  */
 passport.use(
     new LocalStrategy(
-        {
-            usernameField: 'email',
-        },
         async (
-            email: string,
+            username: string,
             password: string,
             done: Function
         ): Promise<void> => {
             try {
                 const user: IUserModel = await UserModel.findOne({
-                    email: email.toLowerCase(),
+                    username,
                 })
 
                 if (!user) {
                     return done(undefined, false, {
-                        message: `Email ${email} not found.`,
+                        message: `User ${username} not found.`,
                     })
                 }
 
@@ -74,7 +70,7 @@ passport.use(
                 }
 
                 return done(undefined, false, {
-                    message: 'Invalid email or password.',
+                    message: 'Invalid username or password.',
                 })
             } catch (error) {
                 done(error)

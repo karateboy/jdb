@@ -10,23 +10,10 @@ import { NextFunction } from 'express'
  * @extends {Document}
  */
 export interface IUserModel extends Document {
-    email: string
+    username: string
     password: string
-    passwordResetToken: string
-    passwordResetExpires: Date
 
-    facebook: string
-    tokens: AuthToken[]
-
-    profile: {
-        name: string
-        gender: string
-        location: string
-        website: string
-        picture: string
-    }
     comparePassword: (password: string) => Promise<boolean>
-    gravatar: (size: number) => string
 }
 
 export type AuthToken = {
@@ -65,22 +52,20 @@ export type AuthToken = {
  */
 const UserSchema: Schema = new Schema(
     {
-        email: {
+        username: {
             type: String,
             unique: true,
             trim: true,
         },
         password: String,
-        passwordResetToken: String,
-        passwordResetExpires: Date,
-        tokens: Array,
     },
     {
-        collection: 'usermodel',
+        collection: 'jtUser',
         versionKey: false,
     }
+    // tslint:disable-next-line: ter-prefer-arrow-callback
 ).pre('save', async function (next: NextFunction): Promise<void> {
-    const user: any = this // tslint:disable-line
+    /* const user: any = this // tslint:disable-line
 
     if (!user.isModified('password')) {
         return next()
@@ -95,7 +80,9 @@ const UserSchema: Schema = new Schema(
         next()
     } catch (error) {
         return next(error)
-    }
+    } */
+
+    return next()
 })
 
 /**
@@ -105,12 +92,13 @@ UserSchema.methods.comparePassword = async function (
     candidatePassword: string
 ): Promise<boolean> {
     try {
-        const match: boolean = await bcrypt.compare(
+        /* const match: boolean = await bcrypt.compare(
             candidatePassword,
             this.password
         )
+        */
 
-        return match
+        return this.password === candidatePassword
     } catch (error) {
         return error
     }

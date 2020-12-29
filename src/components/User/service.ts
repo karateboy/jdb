@@ -26,12 +26,12 @@ const UserService: IUserService = {
      * @returns {Promise < IUserModel >}
      * @memberof UserService
      */
-    async findOne(id: string): Promise<IUserModel> {
+    async findOne(username: string): Promise<IUserModel> {
         try {
             const validate: Joi.ValidationResult<{
-                id: string
+                username: string
             }> = UserValidation.getUser({
-                id,
+                username,
             })
 
             if (validate.error) {
@@ -39,7 +39,7 @@ const UserService: IUserService = {
             }
 
             return await UserModel.findOne({
-                _id: Types.ObjectId(id),
+                username,
             })
         } catch (error) {
             throw new Error(error.message)
@@ -74,12 +74,12 @@ const UserService: IUserService = {
      * @returns {Promise < IUserModel >}
      * @memberof UserService
      */
-    async remove(id: string): Promise<IUserModel> {
+    async remove(username: string): Promise<IUserModel> {
         try {
             const validate: Joi.ValidationResult<{
-                id: string
+                username: string
             }> = UserValidation.removeUser({
-                id,
+                username,
             })
 
             if (validate.error) {
@@ -87,7 +87,7 @@ const UserService: IUserService = {
             }
 
             const user: IUserModel = await UserModel.findOneAndRemove({
-                _id: Types.ObjectId(id),
+                username
             })
 
             return user
