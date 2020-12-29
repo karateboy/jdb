@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { UserComponent } from '../components'
-
+import UserModel from '../components/User/model'
+import { advancedResults } from '../util/advancedResults'
 /**
  * @constant {express.Router}
  */
@@ -32,7 +33,7 @@ const router: Router = Router()
  *              schema:
  *                $ref: '#/components/schemas/Error'
  */
-router.get('/', UserComponent.findAll)
+router.route("/").get(advancedResults(UserModel), UserComponent.findAll)
 
 /**
  * POST method route
