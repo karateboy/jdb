@@ -52,12 +52,30 @@ export type AuthToken = {
  */
 const UserSchema: Schema = new Schema(
     {
+        id: String,
         username: {
             type: String,
             unique: true,
             trim: true,
         },
         password: String,
+        lastname: String,
+        firstname: String,
+        worktitle: String,
+        language: String,
+        startpage: String,
+        landing: String,
+        timeout: String,
+        ipAddress: String,
+        station: String,
+        station_successor: String,
+        station_group: String,
+        station_successor_group: String,
+        processor: String,
+        batch_passcode: String,
+        office_link: String,
+        floor_link: String,
+        logistics: String,
     },
     {
         collection: 'jtUser',

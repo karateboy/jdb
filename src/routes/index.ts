@@ -1,19 +1,22 @@
-import * as express from 'express';
-import * as http from 'http';
-import * as passportConfig from '../config/middleware/passport';
-import * as swaggerUi from 'swagger-ui-express';
-import AuthRouter from './AuthRouter';
-import UserRouter from './UserRouter';
-let swaggerDoc: Object;
+import * as express from 'express'
+import * as http from 'http'
+import * as passportConfig from '../config/middleware/passport'
+import * as swaggerUi from 'swagger-ui-express'
+import AuthRouter from './AuthRouter'
+import UserRouter from './UserRouter'
+import CustomerRouter from './CustomerRouter'
+import CodeRouter from './CodeRouter'
+import InventoryRouter from './InventoryRouter'
+let swaggerDoc: Object
 
 try {
-    swaggerDoc = require('../../swagger.json');
+    swaggerDoc = require('../../swagger.json')
 } catch (error) {
-    console.log('***************************************************');
-    console.log('  Seems like you doesn\`t have swagger.json file');
-    console.log('  Please, run: ');
-    console.log('  $ swagger-jsdoc -d swaggerDef.js -o swagger.json');
-    console.log('***************************************************');
+    console.log('***************************************************')
+    console.log('  Seems like you doesn`t have swagger.json file')
+    console.log('  Please, run: ')
+    console.log('  $ swagger-jsdoc -d swaggerDef.js -o swagger.json')
+    console.log('***************************************************')
 }
 
 /**
@@ -31,6 +34,29 @@ export function init(app: express.Application): void {
      */
     app.use('/v1/users', passportConfig.isAuthenticated, UserRouter)
 
+    /**
+     * @description
+     *  Forwards any requests to the /v1/users URI to our UserRouter
+     *  Also, check if user authenticated
+     * @constructs
+     */
+    app.use('/v1/customers', passportConfig.isAuthenticated, CustomerRouter)
+
+    /**
+     * @description
+     *  Forwards any requests to the /v1/users URI to our UserRouter
+     *  Also, check if user authenticated
+     * @constructs
+     */
+    app.use('/v1/inventories', passportConfig.isAuthenticated, InventoryRouter)
+
+    /**
+     * @description
+     *  Forwards any requests to the /v1/users URI to our UserRouter
+     *  Also, check if user authenticated
+     * @constructs
+     */
+    app.use('/v1/codes', passportConfig.isAuthenticated, CodeRouter)
     /**
      * @description Forwards any requests to the /auth URI to our AuthRouter
      * @constructs

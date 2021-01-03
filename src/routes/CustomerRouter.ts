@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { UserComponent } from '../components'
-import UserModel from '../components/User/model'
+import { CustomerComponent } from '../components'
+import CustomerModel from '../components/Customer/model'
 import { advancedResults } from '../util/advancedResults'
 /**
  * @constant {express.Router}
@@ -9,13 +9,13 @@ const router: Router = Router()
 
 /**
  * GET method route
- * @example http://localhost:PORT/v1/users
+ * @example http://localhost:PORT/v1/customer
  *
  * @swagger
- * /v1/users:
+ * /v1/customers:
  *   get:
- *     description: Get all stored users in Database
- *     tags: ["users"]
+ *     description: Get all stored customers in Database
+ *     tags: ["customer"]
  *     security:
  *      - cookieAuth: []
  *     responses:
@@ -25,7 +25,7 @@ const router: Router = Router()
  *           application/json:
  *             schema:
  *               oneOf:
- *                - $ref: '#/components/schemas/Users'
+ *                - $ref: '#/components/schemas/Customers'
  *       default:
  *          description: unexpected error
  *          content:
@@ -33,17 +33,17 @@ const router: Router = Router()
  *              schema:
  *                $ref: '#/components/schemas/Error'
  */
-router.route("/").get(advancedResults(UserModel), UserComponent.findAll)
+router.route("/").get(advancedResults(CustomerModel), CustomerComponent.findAll)
 
 /**
  * POST method route
- * @example http://localhost:PORT/v1/users
+ * @example http://localhost:PORT/v1/customer
  *
  * @swagger
  * /v1/users:
  *   post:
  *      description: Create new User
- *      tags: ["users"]
+ *      tags: ["customer"]
  *      security:
  *       - cookieAuth: []
  *      requestBody:
@@ -71,19 +71,55 @@ router.route("/").get(advancedResults(UserModel), UserComponent.findAll)
  *              schema:
  *                $ref: '#/components/schemas/Error'
  */
-router.post('/', UserComponent.create)
-
-router.put('/:id', UserComponent.update)
+router.post('/', CustomerComponent.create)
 
 /**
- * GET method route
- * @example http://localhost:PORT/v1/users/:id
+ * Update method route
+ * @example http://localhost:PORT/v1/customer
  *
  * @swagger
- * /v1/users/{id}:
+ * /v1/users:
+ *   post:
+ *      description: Create new User
+ *      tags: ["customer"]
+ *      security:
+ *       - cookieAuth: []
+ *      requestBody:
+ *        description: user creation request body
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UserSchema'
+ *            example:
+ *              name: userName
+ *              email: test.user@mail.com
+ *      responses:
+ *        201:
+ *          description: return created user
+ *          content:
+ *            application/json:
+ *              schema:
+ *                oneOf:
+ *                  - $ref: '#/components/schemas/UserSchema'
+ *        default:
+ *          description: unexpected error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Error'
+ */
+
+router.route('/:id').put(CustomerComponent.update)
+/**
+ * GET method route
+ * @example http://localhost:PORT/v1/customers/:id
+ *
+ * @swagger
+ * /v1/customers/{id}:
  *  get:
  *    description: Get user by userId
- *    tags: ["users"]
+ *    tags: ["s"]
  *    security:
  *      - cookieAuth: []
  *    parameters:
@@ -102,7 +138,7 @@ router.put('/:id', UserComponent.update)
  *              oneOf:
  *                - $ref: '#/components/schemas/UserSchema'
  */
-router.get('/:id', UserComponent.findOne)
+router.get('/:id', CustomerComponent.findOne)
 
 /**
  * DELETE method route
@@ -131,7 +167,7 @@ router.get('/:id', UserComponent.findOne)
  *              oneOf:
  *                - $ref: '#/components/schemas/UserSchema'
  */
-router.delete('/:id', UserComponent.remove)
+router.delete('/:id', CustomerComponent.remove)
 
 /**
  * @export {express.Router}

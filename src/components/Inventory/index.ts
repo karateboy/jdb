@@ -1,10 +1,8 @@
 import { HttpError } from '../../config/error'
-import UserModel, { IUserModel } from './model'
+import Model from './model'
 import { NextFunction, Request, Response } from 'express'
 import asyncHandler from '../../util/async'
 import { AdvanceResponse } from '../../util/advancedResults'
-import * as Joi from 'joi'
-import UserValidation from './validation'
 
 /**
  * @export
@@ -32,31 +30,17 @@ export async function findOne(
     next: NextFunction
 ): Promise<void> {
     try {
-        let username = req.params.id
-        const validate: Joi.ValidationResult<{
-            username: string
-        }> = UserValidation.getUser({
-            username,
-        })
+        let _id = req.params.id
 
-        if (validate.error) {
-            throw new Error(validate.error.message)
-        }
+        const code = await Model.findById(_id)
 
-        const user: IUserModel = await UserModel.findOne({
-            username,
-        })
-
-        if (!user) {
+        if (!code) {
             return next(
-                new HttpError(
-                    404,
-                    `User not found with username of ${username}`
-                )
+                new HttpError(404, `Inventory not found with _id of ${_id}`)
             )
         }
 
-        res.status(200).json(user)
+        res.status(200).json(code)
     } catch (error) {
         next(new HttpError(error.message.status, error.message))
     }
@@ -76,17 +60,9 @@ export async function create(
 ): Promise<void> {
     try {
         let body = req.body
-        const validate: Joi.ValidationResult<IUserModel> = UserValidation.createUser(
-            body
-        )
+        const data = await Model.create(body)
 
-        if (validate.error) {
-            throw new Error(validate.error.message)
-        }
-
-        const user: IUserModel = await UserModel.create(body)
-
-        res.status(201).json(user)
+        res.status(201).json(data)
     } catch (error) {
         next(new HttpError(error.message.status, error.message))
     }
@@ -101,24 +77,20 @@ export async function create(
  */
 export const update = asyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
-        let username = req.params.id
+        let _id = req.params.id
 
-        let u = await UserModel.findOne({ username })
-        if (!u) {
+        let c = await Model.findById(req.params.id)
+        if (!c) {
             return next(
-                new HttpError(
-                    404,
-                    `User not found with username of ${username}`
-                )
+                new HttpError(404, `Code not found with id of ${req.params.id}`)
             )
         }
 
-        console.log(req.body)
-        const user = await UserModel.findOneAndUpdate({ username }, req.body, {
+        const customer = await Model.findByIdAndUpdate(_id, req.body, {
             new: true,
             runValidators: true,
         })
-        res.status(200).json(user)
+        res.status(200).json(customer)
     }
 )
 /**
@@ -134,22 +106,11 @@ export async function remove(
     next: NextFunction
 ): Promise<void> {
     try {
-        let username = req.params.id
-        const validate: Joi.ValidationResult<{
-            username: string
-        }> = UserValidation.removeUser({
-            username,
-        })
+        let _id = req.params.id
 
-        if (validate.error) {
-            throw new Error(validate.error.message)
-        }
+        const customer = await Model.findByIdAndRemove(_id)
 
-        const user: IUserModel = await UserModel.findOneAndRemove({
-            username,
-        })
-
-        res.status(200).json(user)
+        res.status(200).json(customer)
     } catch (error) {
         next(new HttpError(error.message.status, error.message))
     }
