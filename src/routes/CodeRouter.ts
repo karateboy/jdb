@@ -9,23 +9,25 @@ const router: Router = Router()
 
 /**
  * GET method route
- * @example http://localhost:PORT/v1/code
+ * @example http://localhost:PORT/v1/codes
  *
  * @swagger
  * /v1/customers:
  *   get:
  *     description: Get all stored customers in Database
- *     tags: ["customer"]
+ *     tags: ["code"]
  *     security:
  *      - cookieAuth: []
+ *  parameters:
+ *       'select', 'sort', 'page', 'limit'
  *     responses:
  *       200:
- *         description: An array of users
+ *         description: An array of codes
  *         content:
  *           application/json:
  *             schema:
  *               oneOf:
- *                - $ref: '#/components/schemas/Customers'
+ *                - $ref: '#/components/schemas/Code'
  *       default:
  *          description: unexpected error
  *          content:
@@ -37,33 +39,42 @@ router.route("/").get(advancedResults(Model), Component.findAll)
 
 /**
  * POST method route
- * @example http://localhost:PORT/v1/customer
+ * @example http://localhost:PORT/v1/codes
  *
  * @swagger
- * /v1/users:
+ * /v1/codes:
  *   post:
- *      description: Create new User
+ *      description: Create new code
  *      tags: ["customer"]
  *      security:
  *       - cookieAuth: []
  *      requestBody:
- *        description: user creation request body
+ *        description: code creation request body
  *        required: true
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/UserSchema'
+ *              $ref: '#/components/schemas/codeSchema'
  *            example:
- *              name: userName
- *              email: test.user@mail.com
+ *              POST http://{{URL}}/v1/codes
+ *              body:
+ *          {    
+ *              "seq": "1",
+ *              "code": "red",
+ *              "code_type": "PRINT_TYPE",
+ *              "code_desc": "PLATFORM",
+ *              "code_label": "PLATFORM",
+ *              "code_label_thai": "PLATFORM",
+ *              "code_label_chinese": "PLATFORM"
+ *          }
  *      responses:
  *        201:
- *          description: return created user
+ *          description: return created code
  *          content:
  *            application/json:
  *              schema:
  *                oneOf:
- *                  - $ref: '#/components/schemas/UserSchema'
+ *                  - $ref: '#/components/schemas/CodeSchema'
  *        default:
  *          description: unexpected error
  *          content:
@@ -75,33 +86,36 @@ router.post('/', Component.create)
 
 /**
  * Update method route
- * @example http://localhost:PORT/v1/customer
+ * @example http://localhost:PORT/v1/codes/:_id
  *
  * @swagger
- * /v1/users:
- *   post:
- *      description: Create new User
- *      tags: ["customer"]
+ * /v1/codes:
+ *   put:
+ *      description: Update Code
+ *      tags: ["code"]
  *      security:
  *       - cookieAuth: []
  *      requestBody:
- *        description: user creation request body
+ *        description: update code content
  *        required: true
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/UserSchema'
- *            example:
- *              name: userName
- *              email: test.user@mail.com
+ *              $ref: '#/components/schemas/CodeSchema'
+ *            example: set code to "red"
+ *              http://{URL}/v1/codes/5e5e0dedb0180000fd006fb1
+ *              body:
+ *              {
+ *                  "code": "red"
+ *                }
  *      responses:
  *        201:
- *          description: return created user
+ *          description: return created code
  *          content:
  *            application/json:
  *              schema:
  *                oneOf:
- *                  - $ref: '#/components/schemas/UserSchema'
+ *                  - $ref: '#/components/schemas/CodeSchema'
  *        default:
  *          description: unexpected error
  *          content:
@@ -113,59 +127,48 @@ router.post('/', Component.create)
 router.route('/:id').put(Component.update)
 /**
  * GET method route
- * @example http://localhost:PORT/v1/customers/:id
+ * @example http://localhost:PORT/v1/codes/:id
  *
  * @swagger
- * /v1/customers/{id}:
+ * /v1/codes/{id}:
  *  get:
- *    description: Get user by userId
- *    tags: ["s"]
+ *    description: Get code by Id
+ *    tags: ["code"]
  *    security:
  *      - cookieAuth: []
  *    parameters:
- *      - in: path
- *        name: id
- *        description: the unique userId
- *        required: true
- *        schema:
- *          type: string
+ 
  *    responses:
  *      200:
- *        description: return user by id
+ *        description: return code by id
  *        content:
  *          application/json:
  *            schema:
  *              oneOf:
- *                - $ref: '#/components/schemas/UserSchema'
+ *                - $ref: '#/components/schemas/codeSchema'
  */
 router.get('/:id', Component.findOne)
 
 /**
  * DELETE method route
- * @example  http://localhost:PORT/v1/users/:id
+ * @example  http://localhost:PORT/v1/codes/:id
  *
  * @swagger
- * /v1/users/{id}:
+ * /v1/codes/{id}:
  *  delete:
- *    description: Delete user by userId
- *    tags: ["users"]
+ *    description: Delete code by Id
+ *    tags: ["codes"]
  *    security:
  *      - cookieAuth: []
  *    parameters:
- *      - in: path
- *        name: id
- *        description: the unique userId
- *        required: true
- *        schema:
- *          type: string
  *    responses:
  *      200:
- *        description: return deleted user
+ *        description: return deleted code
  *        content:
  *          application/json:
  *            schema:
  *              oneOf:
- *                - $ref: '#/components/schemas/UserSchema'
+ *                - $ref: '#/components/schemas/codeSchema'
  */
 router.delete('/:id', Component.remove)
 

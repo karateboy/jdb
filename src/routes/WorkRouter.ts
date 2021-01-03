@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { CustomerComponent } from '../components'
-import CustomerModel from '../components/Customer/model'
+import * as WorkComponent from '../components/Work'
+import WorkModel from '../components/Work/model'
 import { advancedResults } from '../util/advancedResults'
 /**
  * @constant {express.Router}
@@ -9,25 +9,25 @@ const router: Router = Router()
 
 /**
  * GET method route
- * @example http://localhost:PORT/v1/customers
+ * @example http://localhost:PORT/v1/works
  *
  * @swagger
- * /v1/customers:
+ * /v1/works:
  *   get:
- *     description: Get all stored customers in Database
- *     tags: ["customer"]
+ *     description: Get all stored works in Database
+ *     tags: ["work"]
  *     security:
  *      - cookieAuth: []
  *     parameters:
  *       'select', 'sort', 'page', 'limit'
  *     responses:
  *       200:
- *         description: An array of customers
+ *         description: An array of works
  *         content:
  *           application/json:
  *             schema:
  *               oneOf:
- *                - $ref: '#/components/schemas/Customers'
+ *                - $ref: '#/components/schemas/Works'
  *       default:
  *          description: unexpected error
  *          content:
@@ -35,45 +35,38 @@ const router: Router = Router()
  *              schema:
  *                $ref: '#/components/schemas/Error'
  */
-router.route("/").get(advancedResults(CustomerModel), CustomerComponent.findAll)
+router.route("/").get(advancedResults(WorkModel), WorkComponent.findAll)
 
 /**
  * POST method route
- * @example http://localhost:PORT/v1/customers
+ * @example http://localhost:PORT/v1/works
  *
  * @swagger
- * /v1/customers:
+ * /v1/works:
  *   post:
- *      description: Create new Customer
- *      tags: ["customer"]
+ *      description: Create new Work
+ *      tags: ["work"]
  *      security:
  *       - cookieAuth: []
  *      requestBody:
- *        description: customer creation request body
+ *        description: work creation request body
  *        required: true
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/CustomerSchema'
+ *              $ref: '#/components/schemas/WorkSchema'
  *            example:
  *              {
- *                  "display": "Y",
- *                  "customer_code": "MAX",
- *                  "customer_name": "บริษัท แม๊กซิส อินเตอร์เนชั่นแนล (ประเทศไทย)จำกัด",
- *                  "payment_term": "60",
- *                  "sales": "",
- *                  "create_date": "2006-04-25",
- *                  "account_type": "A",
- *                  "subPack": "Y"
+ ...
  *              }
  *      responses:
  *        201:
- *          description: return created customer
+ *          description: return created work
  *          content:
  *            application/json:
  *              schema:
  *                oneOf:
- *                  - $ref: '#/components/schemas/customerSchema'
+ *                  - $ref: '#/components/schemas/workSchema'
  *        default:
  *          description: unexpected error
  *          content:
@@ -81,38 +74,38 @@ router.route("/").get(advancedResults(CustomerModel), CustomerComponent.findAll)
  *              schema:
  *                $ref: '#/components/schemas/Error'
  */
-router.post('/', CustomerComponent.create)
+router.post('/', WorkComponent.create)
 
 /**
  * Update method route
- * @example http://localhost:PORT/v1/customers/5e70616f26520000ef0060b1
+ * @example http://localhost:PORT/v1/works/5e70616f26520000ef0060b1
  *
  * @swagger
- * /v1/customers:
+ * /v1/works:
  *   put:
- *      description: Update customer by Id
- *      tags: ["customer"]
+ *      description: Update work by Id
+ *      tags: ["work"]
  *      security:
  *       - cookieAuth: []
  *      requestBody:
- *        description: update customer by request body
+ *        description: update work by request body
  *        required: true
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/customerSchema'
+ *              $ref: '#/components/schemas/workSchema'
  *            example:
  *              {
- *                  "display": "Y"
+ *                  "shipping_record": [],
  *              }
  *      responses:
  *        201:
- *          description: return created customer
+ *          description: return created work
  *          content:
  *            application/json:
  *              schema:
  *                oneOf:
- *                  - $ref: '#/components/schemas/customerSchema'
+ *                  - $ref: '#/components/schemas/workSchema'
  *        default:
  *          description: unexpected error
  *          content:
@@ -121,57 +114,57 @@ router.post('/', CustomerComponent.create)
  *                $ref: '#/components/schemas/Error'
  */
 
-router.route('/:id').put(CustomerComponent.update)
+router.route('/:id').put(WorkComponent.update)
 /**
  * GET method route
- * @example http://localhost:PORT/v1/customers/:id
+ * @example http://localhost:PORT/v1/works/:id
  *
  * @swagger
- * /v1/customers/{id}:
+ * /v1/works/{id}:
  *  get:
- *    description: Get customer by customerId
- *    tags: ["s"]
+ *    description: Get work by work Id
+ *    tags: ["works"]
  *    security:
  *      - cookieAuth: []
  *    responses:
  *      200:
- *        description: return customer by id
+ *        description: return work by id
  *        content:
  *          application/json:
  *            schema:
  *              oneOf:
- *                - $ref: '#/components/schemas/customerSchema'
+ *                - $ref: '#/components/schemas/workSchema'
  */
-router.get('/:id', CustomerComponent.findOne)
+router.get('/:id', WorkComponent.findOne)
 
 /**
  * DELETE method route
- * @example  http://localhost:PORT/v1/customers/:id
+ * @example  http://localhost:PORT/v1/works/:id
  *
  * @swagger
- * /v1/customers/{id}:
+ * /v1/works/{id}:
  *  delete:
- *    description: Delete customer by Id
- *    tags: ["customers"]
+ *    description: Delete work by Id
+ *    tags: ["works"]
  *    security:
  *      - cookieAuth: []
  *    parameters:
  *      - in: path
  *        name: id
- *        description: the unique customerId
+ *        description: the unique workId
  *        required: true
  *        schema:
  *          type: string
  *    responses:
  *      200:
- *        description: return deleted customer
+ *        description: return deleted work
  *        content:
  *          application/json:
  *            schema:
  *              oneOf:
- *                - $ref: '#/components/schemas/customerSchema'
+ *                - $ref: '#/components/schemas/workSchema'
  */
-router.delete('/:id', CustomerComponent.remove)
+router.delete('/:id', WorkComponent.remove)
 
 /**
  * @export {express.Router}

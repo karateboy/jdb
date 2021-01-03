@@ -22,7 +22,7 @@ const router: Router = Router()
  *          schema:
  *            $ref: '#/components/schemas/UserSchema'
  *          example:
- *            email: test.user@mail.com
+ *            username: cliao
  *            password: test_test
  *    responses:
  *      200:
@@ -53,7 +53,9 @@ router.post('/signup', AuthComponent.signup)
  *  post:
  *    description: Login user to application
  *    tags: ["auth"]
- *    requestBody:
+ *    requestBody: urlencoded
+ *      username: cliao
+ *      password: 87f9d78690e4001313347788fa9f55e293a4c287
  *      description: login body
  *      required: true
  *      content:
@@ -61,7 +63,7 @@ router.post('/signup', AuthComponent.signup)
  *          schema:
  *            $ref: '#/components/schemas/UserSchema'
  *          example:
- *            email: test.user@mail.com
+ *            username: cliao
  *            password: test_test
  *    responses:
  *      200:
@@ -87,7 +89,7 @@ router.post('/login', AuthComponent.login)
  * @example http://localhost:3000
  *
  * @swagger
- * /auth/logout/:
+ * /auth/logout
  *  post:
  *    description: Loogout from application
  *    tags: ["auth"]

@@ -77,7 +77,6 @@ export const advancedResults = (model: any, populate?: string) => async (
     // Executing query
     const results = await query
 
-    console.log(results)
     // Pagination result
     const pagination: {
         next: Indicator
