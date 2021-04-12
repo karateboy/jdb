@@ -30,14 +30,14 @@ try {
  */
 export function init(app: express.Application): void {
     const router: express.Router = express.Router()
-    app.use('/v1/users', passportConfig.isAuthenticated, UserRouter)
-    app.use('/v1/customers', passportConfig.isAuthenticated, CustomerRouter)
-    app.use('/v1/inventories', passportConfig.isAuthenticated, InventoryRouter)
-    app.use('/v1/codes', passportConfig.isAuthenticated, CodeRouter)
-    app.use('/v1/materials', passportConfig.isAuthenticated, MaterialRouter)
-    app.use('/v1/orders', passportConfig.isAuthenticated, OrderRouter)
-    app.use('/v1/products', passportConfig.isAuthenticated, ProductRouter)
-    app.use('/v1/works', passportConfig.isAuthenticated, WorkRouter)
+    app.use('/v1/users', UserRouter)
+    app.use('/v1/customers', CustomerRouter)
+    app.use('/v1/inventories', InventoryRouter)
+    app.use('/v1/codes', CodeRouter)
+    app.use('/v1/materials', MaterialRouter)
+    app.use('/v1/orders', OrderRouter)
+    app.use('/v1/products', ProductRouter)
+    app.use('/v1/works', WorkRouter)
 
     app.use('/auth', AuthRouter)
 
